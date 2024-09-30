@@ -3,10 +3,16 @@
 
 import RPi.GPIO as GPIO
 import subprocess
+import time
 
+switchPin = 3
+
+def wait_for_falling_edge(gpioNumber):
+    while GPIO.input(gpioNumber):
+        time.sleep(.01)
 
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(3, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.wait_for_edge(3, GPIO.FALLING)
+GPIO.setup(switchPin, GPIO.IN)
+wait_for_falling_edge(switchPin)
 
 subprocess.call(['shutdown', '-h', 'now'], shell=False)
